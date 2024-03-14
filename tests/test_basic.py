@@ -1,17 +1,25 @@
 import unittest
-from app import create_app
+from app import app, db
 
 
-class HomePageTest(unittest.TestCase):
+class BasicTestCase(unittest.TestCase):
+
     def setUp(self):
-        self.app = create_app()
-        self.client = self.app.test_client()
-        self.app.testing = True
+        app.config['TESTING'] = True
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+        self.client = app.test_client()
+        with app.app_context():
+            db.create_all()
 
-    def test_home_page_loads(self):
+    def tearDown(self):
+        with app.app_context():
+            db.session.remove()
+            db.drop_all()
+
+    def test_home_page(self):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn('Welcome', response.data.decode('utf-8'))
+        self.assertIn('Welcome to the Recipe App', response.data.decode())
 
 
 if __name__ == '__main__':
