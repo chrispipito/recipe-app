@@ -1,12 +1,17 @@
 import sqlite3
 
-conn = sqlite3.connect('recipes.db')
-c = conn.cursor()
+connection = sqlite3.connect('recipes.db')
+cursor = connection.cursor()
 
-# Create table
-c.execute('''CREATE TABLE recipes
-             (id INTEGER PRIMARY KEY, name TEXT, ingredients TEXT, instructions TEXT)''')
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS recipes (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    ingredients TEXT NOT NULL,
+    instructions TEXT NOT NULL
+)
+''')
 
-# Commit the changes and close the connection
-conn.commit()
-conn.close()
+connection.commit()
+connection.close()
+
