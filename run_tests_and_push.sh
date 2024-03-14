@@ -8,8 +8,9 @@ if [ "$current_branch" == "main" ]; then
     exit 1
 fi
 
+cd /Users/chris/PycharmProjects/Projects/Recipes/tests
 # Run the tests
-python -m unittest
+python -m unittest discover tests
 
 # If the tests pass, prompt for a commit message and commit the changes
 if [ $? -eq 0 ]; then
