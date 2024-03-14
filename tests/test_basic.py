@@ -1,16 +1,17 @@
 import unittest
-from flask_testing import TestCase
 from app import create_app
 
 
-class TestBase(TestCase):
-    def create_app(self):
-        app = create_app()
-        app.config.update(SQLALCHEMY_DATABASE_URI='sqlite:///:memory:', TESTING=True)
-        return app
+class BasicTests(unittest.TestCase):
+    def setUp(self):
+        self.app = create_app()
+        self.client = self.app.test_client()
+        self.app_context = self.app.app_context()
+        self.app_context.push()
 
+    def tearDown(self):
+        self.app_context.pop()
 
-class TestHome(TestBase):
     def test_home(self):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
