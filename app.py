@@ -14,6 +14,11 @@ def home():
     return render_template('home.html')
 
 
+@app.route('/add', methods=['GET'])
+def add_recipe_form():
+    return render_template('add_recipe.html')
+
+
 # Add other routes here
 
 if __name__ == '__main__':

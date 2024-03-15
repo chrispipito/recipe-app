@@ -21,6 +21,11 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('Welcome to the Recipe App', response.data.decode())
 
+    def test_add_recipe_form(self):
+        response = self.client.get('/add')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('Add a New Recipe', response.data.decode())
+
 
 if __name__ == '__main__':
     unittest.main()
