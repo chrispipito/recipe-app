@@ -8,6 +8,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+with app.app_context():
+    db.create_all()
 
 
 @app.route('/')
@@ -40,6 +42,12 @@ def add_recipe():
 
     # If not a POST request, just render the form
     return render_template('add_recipe.html')
+
+
+@app.route('/recipes')
+def view_recipes():
+    recipes = Recipe.query.all()
+    return render_template('recipes.html', recipes=recipes)
 
 
 if __name__ == '__main__':
