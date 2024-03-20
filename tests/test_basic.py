@@ -58,6 +58,18 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('Test Recipe', response.data.decode())
 
+    def test_view_recipe_details(self):
+        with app.app_context():
+            recipe = Recipe(name='Sample Recipe', ingredients='ingredients', instructions='instructions')
+            db.session.add(recipe)
+            db.session.commit()
+            recipe_id = recipe.id
+        response = self.client.get(f'/recipes/{recipe_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('Sample Recipe', response.data.decode())
+        self.assertIn('Ingredients', response.data.decode())
+        self.assertIn('Instructions', response.data.decode())
+
 
 if __name__ == '__main__':
     unittest.main()

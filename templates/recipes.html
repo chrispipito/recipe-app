@@ -9,10 +9,14 @@
     <h1>All Recipes</h1>
     <ul>
         {% for recipe in recipes %}
-            <li>{{ recipe.name }}</li>
+            <li>
+                <!-- Make each recipe name a link to its detail page -->
+                <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">{{ recipe.name }}</a>
+            </li>
         {% else %}
             <p>No recipes found.</p>
         {% endfor %}
     </ul>
 </body>
 </html>
+

@@ -50,5 +50,11 @@ def view_recipes():
     return render_template('recipes.html', recipes=recipes)
 
 
+@app.route('/recipes/<int:recipe_id>')
+def recipe_detail(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+    return render_template('recipe_detail.html', recipe=recipe)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
