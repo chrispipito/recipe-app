@@ -56,5 +56,24 @@ def recipe_detail(recipe_id):
     return render_template('recipe_detail.html', recipe=recipe)
 
 
+@app.route('/api')
+def hello_api():
+    return {'message': 'Hello, API!'}
+
+
+@app.route('/api/recipes', methods=['GET'])
+def get_recipes():
+    recipes = Recipe.query.all()
+    recipes_data = []
+    for recipe in recipes:
+        recipes_data.append({
+            'id': recipe.id,
+            'name': recipe.name,
+            'ingredients': recipe.ingredients,
+            'instructions': recipe.instructions
+        })
+    return {'recipes': recipes_data}
+
+
 if __name__ == '__main__':
     app.run(debug=True)

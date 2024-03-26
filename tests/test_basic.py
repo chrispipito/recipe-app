@@ -11,6 +11,9 @@ class BasicTestCase(unittest.TestCase):
         self.client = app.test_client()
         with app.app_context():
             db.create_all()
+            recipe = Recipe(name='Test Recipe #1', ingredients='Test Ingredients', instructions='Test Instructions')
+            db.session.add(recipe)
+            db.session.commit()
 
     def tearDown(self):
         with app.app_context():
@@ -69,6 +72,23 @@ class BasicTestCase(unittest.TestCase):
         self.assertIn('Sample Recipe', response.data.decode())
         self.assertIn('Ingredients', response.data.decode())
         self.assertIn('Instructions', response.data.decode())
+
+    def test_get_all_recipes_with_api(self):
+        response = self.client.get('api/recipes')
+        self.assertEqual(response.status_code, 200)
+
+        data = response.get_json()
+        self.assertIsInstance(data, dict)
+        self.assertIn('recipes', data)
+
+        recipes = data['recipes']
+        self.assertIsInstance(recipes, list)
+
+        self.assertGreater(len(recipes), 0)
+        self.assertIn('name', recipes[0])
+        self.assertIn('ingredients', recipes[0])
+        self.assertIn('instructions',recipes[0])
+        self.assertEqual(recipes[0]['name'], 'Test Recipe #1')
 
 
 if __name__ == '__main__':
